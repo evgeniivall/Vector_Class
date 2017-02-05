@@ -48,6 +48,35 @@ public:
     void push_back( const Vector_Type& value );
     void pop_back();
 
+    Vector_Type&       back()
+    {
+        return data_[size_ - 1];
+    }
+
+    const Vector_Type& back() const
+    {
+        return data_[size_ - 1];
+    }
+
+    Vector_Type*       data()
+    {
+        return data_;
+    }
+    const Vector_Type* data() const
+    {
+        return data_;
+    }
+
+    Vector_Type&       at( size_t pos )
+    {
+        return data_[pos];
+    }
+    const Vector_Type& at( size_t pos ) const
+    {
+        return data_[pos];
+    }
+
+
     //TODO:
     iterator erase(iterator pos);
     iterator erase( iterator first, iterator last );
