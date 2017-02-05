@@ -5,15 +5,21 @@
 
 int main()
 {
-    Vector<int> v(10);
-    for(int i = 0; i < 10; i++)
+    Vector<int> v(10, 2);
+
+
+    v.resize(20, 4);
+    v.resize(11);
+    v.push_back(0);
+    v.push_back(0);
+
+    while(v.size() > 0)
     {
-        v[i] = i;
+        v.pop_back();
+        std::cout  << "Size: " << v.size() << std::endl;
     }
-    for(int i = 0; i < 10; i++)
-    {
-        std::cout << v[i];
-    }
+    std::cout << v.empty();
+    std::cout << "size: " << v.size();
 
     return 0;
 }
