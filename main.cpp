@@ -6,20 +6,31 @@
 int main()
 {
     Vector<int> v(10, 2);
-
-
-    v.resize(20, 4);
-    v.resize(11);
-    v.push_back(0);
-    v.push_back(0);
-
-    while(v.size() > 0)
+    int d = 0;
+    for(auto i = v.begin(); i != v.end(); ++i)
     {
-        v.pop_back();
-        std::cout  << "Size: " << v.size() << std::endl;
+        *i = d++;
     }
-    std::cout << v.empty();
-    std::cout << "size: " << v.size();
+
+    for(auto i = v.begin(); i != v.end(); ++i)
+    {
+     std::cout << *i;
+    }
+
+    v.erase(v.begin());
+    std::cout << std::endl;
+    for(auto i = v.begin(); i != v.end(); ++i)
+    {
+     std::cout << *i;
+    }
+
+     std::cout << *(v.erase((v.begin() + 2), (v.begin() + 5)));
+    std::cout << std::endl;
+    for(auto i = v.begin(); i != v.end(); ++i)
+    {
+     std::cout << *i;
+    }
+
 
     return 0;
 }

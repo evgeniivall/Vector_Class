@@ -2,8 +2,6 @@
 #define VECTOR_CLASS_H
 #include <new>
 
-
-
 template <class T>
 void copy(T* destination, T* source, size_t count)
 {
@@ -16,7 +14,67 @@ void copy(T* destination, T* source, size_t count)
 typedef char byte;
 
 //TODO:
-class iterator;
+template<class T>
+class iterator
+{
+private:
+    T* pointer;
+public:
+    iterator():pointer(NULL){}
+    explicit iterator(T* ptr):pointer(ptr){}
+    const int& operator*() const
+    {
+        return *pointer;
+    }
+
+    int& operator*()
+    {
+        return *pointer;
+    }
+    iterator& operator++()
+    {
+        pointer++;
+        return *this;
+    }
+    iterator operator++(int)
+    { return iterator(pointer++); }
+    iterator& operator--()
+    {
+        pointer--;
+        return *this;
+    }
+    iterator operator--(int)
+     { return iterator(pointer--); }
+    T* base() const { return pointer; }
+
+    iterator& operator+=(const std::size_t& __n)
+      { pointer += __n; return *this; }
+
+      iterator operator+(const std::size_t& __n) const
+      { return iterator(pointer + __n); }
+
+      iterator& operator-=(const std::size_t& __n)
+      { pointer -= __n; return *this; }
+
+      iterator operator-(const std::size_t& __n) const
+      { return iterator(pointer - __n); }
+
+
+    size_t operator -(const iterator<T> & other)
+    {
+        return pointer - other.pointer;
+    }
+
+
+};
+template <class T>
+inline bool operator==(const iterator<T>& __lhs, const iterator<T>& __rhs)
+{ return __lhs.base() == __rhs.base(); }
+
+template <class T>
+inline bool operator!=(const iterator<T>& __lhs, const iterator<T>& __rhs)
+{ return __lhs.base() != __rhs.base(); }
+
 class reverse_iterator;
 
 template <typename Vector_Type>
@@ -27,6 +85,7 @@ private:
     size_t size_;
 
 public:
+    //friend class iterator;
     //template < typename Other > friend class Vector ;
     Vector():size_(0), data_(NULL){}
     explicit Vector(size_t size, const Vector_Type& value = Vector_Type());
@@ -78,13 +137,58 @@ public:
 
 
     //TODO:
-    iterator erase(iterator pos);
-    iterator erase( iterator first, iterator last );
 
-    iterator begin();
-    reverse_iterator rbegin();
-    iterator end();
-    reverse_iterator rend();
+
+    iterator<Vector_Type> erase( iterator<Vector_Type> first, iterator<Vector_Type> last )
+    {
+        Vector<Vector_Type> temp(size_ - (last - first));
+
+        iterator<Vector_Type> itr, temp_itr, ret_itr;
+        for(itr = this->begin(), temp_itr = temp.begin(); itr != first; ++itr, ++temp_itr)
+        {
+            *temp_itr = *itr;
+        }
+        ret_itr = temp_itr;
+        for(itr = last; temp_itr != temp.end(); ++itr, ++temp_itr)
+        {
+            *temp_itr = *itr;
+        }
+        this->swap(temp);
+        return ret_itr;
+    }
+
+    iterator<Vector_Type> erase(iterator<Vector_Type> pos)
+    {
+        Vector<Vector_Type> temp(size_ - 1);
+
+        iterator<Vector_Type> itr, temp_itr, ret_itr;
+        for(itr = this->begin(), temp_itr = temp.begin(); itr != pos; ++itr, ++temp_itr)
+        {
+            *temp_itr = *itr;
+        }
+        ++itr;
+         ret_itr = temp_itr;
+        for(; temp_itr != temp.end(); ++itr, ++temp_itr)
+        {
+            *temp_itr = *itr;
+        }
+        this->swap(temp);
+        return ret_itr;
+    }
+
+    iterator<Vector_Type> begin()
+    {
+        iterator <Vector_Type>it(data_);
+        return it;
+    }
+
+    //reverse_iterator rbegin();
+    iterator<Vector_Type> end()
+    {
+        iterator <Vector_Type>it(data_ + size_);
+        return it;
+    }
+    //reverse_iterator rend();
 
     bool empty()
     {
