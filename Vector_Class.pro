@@ -12,4 +12,6 @@ TEMPLATE = app
 SOURCES += main.cpp
 
 HEADERS += \
-    vector_class.h
+    vector_class.h \
+    vector_class_impl.h \
+    iterator.h
